@@ -13,6 +13,18 @@
         <action
             android:id="@+id/action_mainFragment_to_usersFragment"
             app:destination="@id/usersFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_providersFragment"
+            app:destination="@id/providersFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_productsFragment"
+            app:destination="@id/productsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_productsFragment2"
+            app:destination="@id/productsFragment" />
     </fragment>
     <fragment
         android:id="@+id/usersFragment"
@@ -35,5 +47,71 @@
         <action
             android:id="@+id/action_newUserFragment_to_usersFragment"
             app:destination="@id/usersFragment" />
+        <action
+            android:id="@+id/action_newUserFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.example.parcial3.CategoriesFragment"
+        android:label="fragment_categories"
+        tools:layout="@layout/fragment_categories" >
+        <action
+            android:id="@+id/action_categoriesFragment_to_newCategoryFragment"
+            app:destination="@id/newCategoryFragment" />
+        <action
+            android:id="@+id/action_categoriesFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newCategoryFragment"
+        android:name="com.example.parcial3.NewCategoryFragment"
+        android:label="fragment_new_category"
+        tools:layout="@layout/fragment_new_category" >
+        <action
+            android:id="@+id/action_newCategoryFragment_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/providersFragment"
+        android:name="com.example.parcial3.ProvidersFragment"
+        android:label="fragment_providers"
+        tools:layout="@layout/fragment_providers" >
+        <action
+            android:id="@+id/action_providersFragment_to_newProviderFragment"
+            app:destination="@id/newProviderFragment" />
+        <action
+            android:id="@+id/action_providersFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newProviderFragment"
+        android:name="com.example.parcial3.NewProviderFragment"
+        android:label="fragment_new_provider"
+        tools:layout="@layout/fragment_new_provider" >
+        <action
+            android:id="@+id/action_newProviderFragment_to_providersFragment"
+            app:destination="@id/providersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productsFragment"
+        android:name="com.example.parcial3.ProductsFragment"
+        android:label="fragment_products"
+        tools:layout="@layout/fragment_products" >
+        <action
+            android:id="@+id/action_productsFragment_to_newProductFragment"
+            app:destination="@id/newProductFragment" />
+        <action
+            android:id="@+id/action_productsFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newProductFragment"
+        android:name="com.example.parcial3.NewProductFragment"
+        android:label="fragment_new_product"
+        tools:layout="@layout/fragment_new_product" >
+        <action
+            android:id="@+id/action_newProductFragment_to_productsFragment"
+            app:destination="@id/productsFragment" />
     </fragment>
 </navigation>

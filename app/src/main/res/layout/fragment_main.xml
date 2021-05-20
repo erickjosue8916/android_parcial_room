@@ -12,14 +12,41 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/btn1"
+            android:id="@+id/btnProductsSection"
+            style="@style/SectionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="116dp"
-            android:paddingVertical="45sp"
-            android:text="Users"
+            android:layout_marginTop="112dp"
+            android:text="Products"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.37"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnCategororiesSection" />
+
+        <Button
+            android:id="@+id/btnProvidersSection"
+            style="@style/SectionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="68dp"
+            android:text="Providers"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btnProductsSection"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/btnProductsSection"
+            app:layout_constraintTop_toBottomOf="@+id/btnProductsSection" />
+
+        <Button
+            android:id="@+id/btnCategororiesSection"
+            style="@style/SectionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:text="Categories"
+            app:layout_constraintEnd_toEndOf="@+id/btnProductsSection"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/btnProductsSection"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

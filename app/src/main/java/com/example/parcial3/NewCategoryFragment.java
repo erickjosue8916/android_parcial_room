@@ -1,5 +1,6 @@
 package com.example.parcial3;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,13 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.parcial3.database.StoreDatabase;
+import com.example.parcial3.entities.categories.Category;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MainFragment#newInstance} factory method to
+ * Use the {@link NewCategoryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment {
+public class NewCategoryFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +32,13 @@ public class MainFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public MainFragment() {
+    private StoreDatabase store;
+    Button btnSaveCategory;
+    TextView inputCategoryName;
+    Context context;
+    View view;
+
+    public NewCategoryFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +48,11 @@ public class MainFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MainFragment.
+     * @return A new instance of fragment NewCategoryFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MainFragment newInstance(String param1, String param2) {
-        MainFragment fragment = new MainFragment();
+    public static NewCategoryFragment newInstance(String param1, String param2) {
+        NewCategoryFragment fragment = new NewCategoryFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,14 +73,30 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        Button btnCategoriesSection = (Button) view.findViewById(R.id.btnCategororiesSection);
-        Button btnProviderSection = (Button) view.findViewById(R.id.btnProvidersSection);
-        Button btnProductsSection = (Button) view.findViewById(R.id.btnProductsSection);
+        view = inflater.inflate(R.layout.fragment_new_category, container, false);
+        context = getContext();
+        store = StoreDatabase.getInstance(context);
+        inputCategoryName = view.findViewById(R.id.inputCategoryName);
+        btnSaveCategory = view.findViewById(R.id.btnCreateCategory);
 
-        btnCategoriesSection.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_categoriesFragment));
-        btnProductsSection.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_productsFragment));
-        btnProviderSection.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_providersFragment));
+        NewCategoryFragment instance = this;
+
+        btnSaveCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                instance.insertCategory();
+            }
+        });
+
+
         return view;
+    }
+
+    private void insertCategory() {
+        Category category = new Category();
+        category.name = inputCategoryName.getText().toString();
+        long res = store.db.categories().insert(category);
+        Toast.makeText(context, "Nueva categoria agregada", Toast.LENGTH_SHORT).show();
+        Navigation.findNavController(view).navigate(R.id.action_newCategoryFragment_to_categoriesFragment);
     }
 }

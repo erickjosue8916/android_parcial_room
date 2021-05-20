@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">Parcial3</string>
+    <string name="app_name">Parcial 3 utilizando ROOM</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="newCategoryHint">Fruits</string>
+    <string name="btnActionSave">Guardar</string>
+    <string name="new_category_label">New category</string>
 </resources>

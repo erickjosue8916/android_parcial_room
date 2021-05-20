@@ -12,10 +12,10 @@ import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MainFragment#newInstance} factory method to
+ * Use the {@link ProductsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment {
+public class ProductsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,9 @@ public class MainFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public MainFragment() {
+    Button btnNewProduct;
+
+    public ProductsFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +38,11 @@ public class MainFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MainFragment.
+     * @return A new instance of fragment ProductsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MainFragment newInstance(String param1, String param2) {
-        MainFragment fragment = new MainFragment();
+    public static ProductsFragment newInstance(String param1, String param2) {
+        ProductsFragment fragment = new ProductsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,14 +63,11 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        Button btnCategoriesSection = (Button) view.findViewById(R.id.btnCategororiesSection);
-        Button btnProviderSection = (Button) view.findViewById(R.id.btnProvidersSection);
-        Button btnProductsSection = (Button) view.findViewById(R.id.btnProductsSection);
+        View view = inflater.inflate(R.layout.fragment_products, container, false);
+        btnNewProduct = view.findViewById(R.id.btnNewProduct);
 
-        btnCategoriesSection.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_categoriesFragment));
-        btnProductsSection.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_productsFragment));
-        btnProviderSection.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_providersFragment));
+        btnNewProduct.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_productsFragment_to_newProductFragment));
+
         return view;
     }
 }

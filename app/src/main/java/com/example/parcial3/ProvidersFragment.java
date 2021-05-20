@@ -1,5 +1,6 @@
 package com.example.parcial3;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,13 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
+
+import com.example.parcial3.database.StoreDatabase;
+import com.example.parcial3.entities.providers.Provider;
+import com.example.parcial3.entities.providers.ProviderAdapter;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MainFragment#newInstance} factory method to
+ * Use the {@link ProvidersFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment {
+public class ProvidersFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +34,15 @@ public class MainFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public MainFragment() {
+    List<Provider> providers;
+    ProviderAdapter adapter;
+    ListView listProviders;
+    StoreDatabase store;
+    View view;
+    Context context;
+    Button btnNewProvider;
+
+    public ProvidersFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +52,11 @@ public class MainFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MainFragment.
+     * @return A new instance of fragment ProvidersFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MainFragment newInstance(String param1, String param2) {
-        MainFragment fragment = new MainFragment();
+    public static ProvidersFragment newInstance(String param1, String param2) {
+        ProvidersFragment fragment = new ProvidersFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,14 +77,21 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        Button btnCategoriesSection = (Button) view.findViewById(R.id.btnCategororiesSection);
-        Button btnProviderSection = (Button) view.findViewById(R.id.btnProvidersSection);
-        Button btnProductsSection = (Button) view.findViewById(R.id.btnProductsSection);
+        View view = inflater.inflate(R.layout.fragment_providers, container, false);
+        context = getContext();
+        store = StoreDatabase.getInstance(context);
+        btnNewProvider = view.findViewById(R.id.btnNewProvider);
+        listProviders = view.findViewById(R.id.listProviders);
 
-        btnCategoriesSection.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_categoriesFragment));
-        btnProductsSection.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_productsFragment));
-        btnProviderSection.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_providersFragment));
+        this.load();
+
+        btnNewProvider.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_providersFragment_to_newProviderFragment));
         return view;
+    }
+
+    private void load(){
+        providers = store.db.provider().getAll();
+        adapter = new ProviderAdapter(context, providers);
+        listProviders.setAdapter(adapter);
     }
 }
