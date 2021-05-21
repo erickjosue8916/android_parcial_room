@@ -84,6 +84,9 @@ public class CategoriesFragment extends Fragment {
         listCategories = view.findViewById(R.id.listCategories);
         this.load();
         btnNewCategory.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_categoriesFragment_to_newCategoryFragment));
+        Button btnHome = view.findViewById(R.id.btnCategoryHome);
+        btnHome.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_categoriesFragment_to_mainFragment));
+
         return view;
     }
 

@@ -26,22 +26,25 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link NewProductFragment#newInstance} factory method to
+ * Use the {@link ProductDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewProductFragment extends Fragment {
+public class ProductDetailsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "productId";
+    private static final String ARG_PARAM2 = "category";
+    private static final String ARG_PARAM3 = "provider";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int productId;
+    private String category;
+    private String provider;
 
     TextView productName;
     Button btnCreateProduct;
+    Button btnDeleteProduct;
 
     List<Category> categories;
     CategoryAdapter categoryAdapter;
@@ -59,9 +62,9 @@ public class NewProductFragment extends Fragment {
     View view;
     Context context;
 
+    Product selectedProduct;
 
-
-    public NewProductFragment() {
+    public ProductDetailsFragment() {
         // Required empty public constructor
     }
 
@@ -71,14 +74,15 @@ public class NewProductFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment NewProductFragment.
+     * @return A new instance of fragment ProductDetailsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NewProductFragment newInstance(String param1, String param2) {
-        NewProductFragment fragment = new NewProductFragment();
+    public static ProductDetailsFragment newInstance(String param1, String param2) {
+        ProductDetailsFragment fragment = new ProductDetailsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM3, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -87,8 +91,9 @@ public class NewProductFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            productId = getArguments().getInt(ARG_PARAM1);
+            category = getArguments().getString(ARG_PARAM2);
+            provider = getArguments().getString(ARG_PARAM3);
         }
     }
 
@@ -96,7 +101,7 @@ public class NewProductFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_new_product, container, false);
+        view = inflater.inflate(R.layout.fragment_product_details, container, false);
         context = getContext();
         store = StoreDatabase.getInstance(context);
         listProviders = view.findViewById(R.id.newProductProviderOptions);
@@ -105,17 +110,37 @@ public class NewProductFragment extends Fragment {
         lblSelectedProvider = view.findViewById(R.id.lblSelectedProvider);
         productName = view.findViewById(R.id.inputProductName);
         btnCreateProduct = view.findViewById(R.id.btnCreateProduct);
+        btnDeleteProduct = view.findViewById(R.id.btnProductDelete);
 
         btnCreateProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insert();
+                update();
+            }
+        });
+
+        btnDeleteProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                delete();
             }
         });
 
         this.loadProviders();
         this.loadCategories();
+        this.loadProduct();
         return view;
+    }
+
+    private void loadProduct () {
+        selectedProduct = store.db.products().getById(productId);
+        productName.setText(selectedProduct.name);
+        // Toast.makeText(context, String.valueOf(productId), Toast.LENGTH_SHORT).show();
+        // show category selected
+        lblSelectedCategory.setText(category);
+
+        // show provider selected
+        lblSelectedProvider.setText(provider);
     }
 
     private void loadCategories() {
@@ -123,12 +148,13 @@ public class NewProductFragment extends Fragment {
         categoryAdapter = new CategoryAdapter(context, categories);
         listCategories.setAdapter(categoryAdapter);
 
-        NewProductFragment instance = this;
+        ProductDetailsFragment instance = this;
 
         listCategories.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 categorySelected = categories.get(i);
+                selectedProduct.categoryId = categorySelected.id;
                 lblSelectedCategory.setText(categorySelected.name);
             }
         });
@@ -143,18 +169,22 @@ public class NewProductFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 providerSelected = providers.get(i);
+                selectedProduct.providerId = providerSelected.id;
                 lblSelectedProvider.setText(providerSelected.name);
             }
         });
     }
 
-    private void insert() {
-        Product product = new Product();
-        product.name = productName.getText().toString();
-        product.providerId = providerSelected.id;
-        product.categoryId = categorySelected.id;
-        long res = store.db.products().insert(product);
-        Toast.makeText(context, "Nueva producto agregada", Toast.LENGTH_SHORT).show();
-        Navigation.findNavController(view).navigate(R.id.action_newProductFragment_to_productsFragment);
+    private void update() {
+        selectedProduct.name = productName.getText().toString();
+        store.db.products().update(selectedProduct);
+        Toast.makeText(context, "Product Updated!!", Toast.LENGTH_SHORT).show();
+        Navigation.findNavController(view).navigate(R.id.action_productDetailsFragment_to_productsFragment);
+    }
+
+    private void delete() {
+        store.db.products().delete(selectedProduct);
+        Toast.makeText(context, "Product deleted!!", Toast.LENGTH_SHORT).show();
+        Navigation.findNavController(view).navigate(R.id.action_productDetailsFragment_to_productsFragment);
     }
 }

@@ -9,6 +9,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -37,6 +38,7 @@ public class ProvidersFragment extends Fragment {
     List<Provider> providers;
     ProviderAdapter adapter;
     ListView listProviders;
+    Provider providerSelected;
     StoreDatabase store;
     View view;
     Context context;
@@ -77,11 +79,13 @@ public class ProvidersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_providers, container, false);
+        view = inflater.inflate(R.layout.fragment_providers, container, false);
         context = getContext();
         store = StoreDatabase.getInstance(context);
         btnNewProvider = view.findViewById(R.id.btnNewProvider);
         listProviders = view.findViewById(R.id.listProviders);
+        Button btnHome = view.findViewById(R.id.btnProviderHome);
+        btnHome.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_providersFragment_to_mainFragment));
 
         this.load();
 
@@ -93,5 +97,15 @@ public class ProvidersFragment extends Fragment {
         providers = store.db.provider().getAll();
         adapter = new ProviderAdapter(context, providers);
         listProviders.setAdapter(adapter);
+        View principalView = view;
+        listProviders.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                providerSelected = providers.get(i);
+                Bundle bundle = new Bundle();
+                bundle.putInt("providerId", providerSelected.id);
+                Navigation.findNavController(principalView).navigate(R.id.action_providersFragment_to_providerDetailsFragment, bundle);
+            }
+        });
     }
 }

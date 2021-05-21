@@ -11,10 +11,10 @@ import com.example.parcial3.R;
 import java.util.List;
 
 public class ProductAdapter extends BaseAdapter {
-    public List<Product> products;
+    public List<ProductView> products;
     public Context context;
 
-    public  ProductAdapter(Context context, List<Product> products) {
+    public  ProductAdapter(Context context, List<ProductView> products) {
         this.context = context;
         this.products = products;
     }
@@ -36,8 +36,15 @@ public class ProductAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        Product product = products.get(i);
+        ProductView product = products.get(i);
         view =  LayoutInflater.from(this.context).inflate(R.layout.item_product_list, null);
+        TextView name = view.findViewById(R.id.itemProductName);
+        TextView provider = view.findViewById(R.id.itemProductProvider);
+        TextView category = view.findViewById(R.id.itemProductCategory);
+
+        name.setText(product.name);
+        provider.setText(product.provider);
+        category.setText(product.category);
         return view;
     }
 }
